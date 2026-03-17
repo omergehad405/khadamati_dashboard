@@ -31,55 +31,55 @@ const UsersTable = () => {
     };
 
     return (
-        <div className="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-100">
-            <div className="px-10 py-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+        <div className="bg-white rounded-2xl sm:rounded-[2.5rem] shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-100">
+            <div className="px-6 sm:px-10 py-6 sm:py-8 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-50/50">
                 <div>
-                    <h2 className="text-3xl font-black text-slate-900">User Management</h2>
-                    <p className="text-slate-400 font-bold mt-1 uppercase text-xs tracking-widest">Controlling Platform Clients</p>
+                    <h2 className="text-2xl sm:text-3xl font-black text-slate-900">User Management</h2>
+                    <p className="text-slate-400 font-bold mt-1 uppercase text-[10px] sm:text-xs tracking-widest">Controlling Platform Clients</p>
                 </div>
-                <div className="bg-white px-5 py-2 rounded-2xl shadow-sm border border-slate-100">
-                    <span className="text-emerald-600 font-black text-xl">{users.length}</span>
-                    <span className="text-slate-400 font-bold ml-2 text-sm uppercase">Total Users</span>
+                <div className="bg-white px-4 sm:px-5 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl shadow-sm border border-slate-100">
+                    <span className="text-emerald-600 font-black text-lg sm:text-xl">{users.length}</span>
+                    <span className="text-slate-400 font-bold ml-2 text-xs sm:text-sm uppercase">Total Users</span>
                 </div>
             </div>
 
             <div className="overflow-x-auto">
                 <table className="w-full">
                     <thead>
-                        <tr className="text-left bg-slate-50 text-slate-400 uppercase text-xs font-black tracking-widest">
-                            <th className="px-10 py-6">User Details</th>
-                            <th className="px-10 py-6">Role</th>
-                            <th className="px-10 py-6">Joined Date</th>
-                            <th className="px-10 py-6 text-right">Actions</th>
+                        <tr className="text-left bg-slate-50 text-slate-400 uppercase text-[10px] sm:text-xs font-black tracking-widest">
+                            <th className="px-6 sm:px-10 py-4 sm:py-6">User Details</th>
+                            <th className="px-6 sm:px-10 py-4 sm:py-6">Role</th>
+                            <th className="px-6 sm:px-10 py-4 sm:py-6">Joined Date</th>
+                            <th className="px-6 sm:px-10 py-4 sm:py-6 text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-50">
                         {users.map(u => (
                             <tr key={u._id} className="hover:bg-slate-50/50 transition-colors group">
-                                <td className="px-10 py-6">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 font-black text-xl group-hover:bg-emerald-100 group-hover:text-emerald-600 transition-colors">
+                                <td className="px-6 sm:px-10 py-4 sm:py-6">
+                                    <div className="flex items-center gap-3 sm:gap-4">
+                                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 font-black text-lg sm:text-xl group-hover:bg-emerald-100 group-hover:text-emerald-600 transition-colors shrink-0">
                                             {u.name.charAt(0)}
                                         </div>
-                                        <div>
-                                            <p className="font-black text-slate-800 text-lg leading-tight">{u.name}</p>
-                                            <p className="text-slate-400 font-bold text-sm tracking-tight">{u.email}</p>
+                                        <div className="min-w-[120px]">
+                                            <p className="font-black text-slate-800 text-base sm:text-lg leading-tight truncate">{u.name}</p>
+                                            <p className="text-slate-400 font-bold text-xs sm:text-sm tracking-tight truncate">{u.email}</p>
                                         </div>
                                     </div>
                                 </td>
-                                <td className="px-10 py-6">
-                                    <span className={`px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-tighter ${u.role === 'admin' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'
+                                <td className="px-6 sm:px-10 py-4 sm:py-6">
+                                    <span className={`px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-tighter whitespace-nowrap ${u.role === 'admin' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'
                                         }`}>
                                         {u.role}
                                     </span>
                                 </td>
-                                <td className="px-10 py-6 text-slate-500 font-bold">
+                                <td className="px-6 sm:px-10 py-4 sm:py-6 text-slate-500 font-bold text-xs sm:text-sm whitespace-nowrap">
                                     {new Date(u.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
                                 </td>
-                                <td className="px-10 py-6 text-right">
+                                <td className="px-6 sm:px-10 py-4 sm:py-6 text-right">
                                     <button
                                         onClick={() => handleDelete(u._id)}
-                                        className="bg-red-50 hover:bg-red-600 text-red-500 hover:text-white px-5 py-2.5 rounded-2xl transition-all duration-300 font-black text-sm uppercase tracking-widest shadow-sm hover:shadow-lg hover:shadow-red-100"
+                                        className="bg-red-50 hover:bg-red-600 text-red-500 hover:text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl transition-all duration-300 font-black text-[10px] sm:text-xs uppercase tracking-widest shadow-sm hover:shadow-lg hover:shadow-red-100 whitespace-nowrap"
                                     >
                                         Remove
                                     </button>

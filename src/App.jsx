@@ -30,6 +30,7 @@ import ReviewsTable from './components/ReviewsTable'
 
 function AppContent() {
     const { i18n, t } = useTranslation();
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [stats, setStats] = useState({
         totalWorkers: 0,
         totalUsers: 0,
@@ -71,40 +72,84 @@ function AppContent() {
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900">
             {/* Minimal Header */}
-            <header className="h-20 glass-effect sticky top-0 z-50 flex items-center justify-between px-8 border-b border-slate-200">
-                <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-100">
-                        <span className="text-white font-black text-xl">K</span>
+            <header className="h-20 glass-effect sticky top-0 z-50 flex items-center justify-between px-4 sm:px-8 border-b border-slate-200">
+                <div className="flex items-center gap-3 sm:gap-4">
+                    <button
+                        className="p-2 -ml-2 lg:hidden text-slate-500 hover:text-emerald-600 transition-colors"
+                        onClick={() => setIsSidebarOpen(true)}
+                    >
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-emerald-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg shadow-emerald-100 shrink-0">
+                        <span className="text-white font-black text-lg sm:text-xl">K</span>
                     </div>
-                    <span className="text-xl font-black tracking-tight text-slate-800 uppercase">
-                        KHADAMATI <span className="text-emerald-600">ADMIN</span>
+                    <span className="text-sm sm:text-xl font-black tracking-tight text-slate-800 uppercase line-clamp-1">
+                        KHADAMATI <span className="text-emerald-600 hidden xs:inline">ADMIN</span>
                     </span>
                 </div>
 
-                <div className="flex items-center gap-6">
+                <div className="flex items-center gap-2 sm:gap-6">
                     <button
                         onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'ar' : 'en')}
-                        className="emerald-glass px-6 py-2.5 rounded-full text-sm font-bold text-emerald-700 hover:bg-emerald-100 transition-all border border-emerald-200 flex items-center gap-2"
+                        className="emerald-glass px-3 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold text-emerald-700 hover:bg-emerald-100 transition-all border border-emerald-200 flex items-center gap-1 sm:gap-2"
                     >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5c1.382 1.154 2.33 2.536 2.848 4.053m4.401 0a18.022 18.022 0 00-3.353-8.947m-3.9 8.947l.001-.001z"></path></svg>
-                        {i18n.language === 'en' ? 'العربية' : 'English'}
+                        <svg className="w-3.5 h-3.5 sm:w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5c1.382 1.154 2.33 2.536 2.848 4.053m4.401 0a18.022 18.022 0 00-3.353-8.947m-3.9 8.947l.001-.001z"></path></svg>
+                        <span className="hidden xs:inline">{i18n.language === 'en' ? 'العربية' : 'English'}</span>
+                        <span className="xs:hidden">{i18n.language === 'en' ? 'AR' : 'EN'}</span>
                     </button>
-                    <div className="flex items-center gap-3 border-l pl-6 border-slate-200">
-                        <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden shadow-sm border-2 border-white">
+                    <div className="flex items-center gap-2 sm:gap-3 border-l pl-3 sm:pl-6 border-slate-200">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-200 overflow-hidden shadow-sm border-2 border-white shrink-0">
                             <img src="https://placehold.co/100x100?text=A" alt="Admin" />
                         </div>
-                        <div className="hidden lg:block">
-                            <p className="text-sm font-black text-slate-800 leading-none">Super Admin</p>
-                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Management</p>
+                        <div className="hidden sm:block">
+                            <p className="text-xs sm:text-sm font-black text-slate-800 leading-none">Super Admin</p>
+                            <p className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Management</p>
                         </div>
                     </div>
                 </div>
             </header>
 
-            <div className="flex flex-1 overflow-hidden">
+            <div className="flex flex-1 overflow-hidden relative">
+                {/* Mobile Sidebar Overlay */}
+                {isSidebarOpen && (
+                    <div
+                        className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[60] lg:hidden animate-fade-in"
+                        onClick={() => setIsSidebarOpen(false)}
+                    />
+                )}
+
                 {/* Modern Sidebar */}
-                <aside className="w-80 bg-white border-r border-slate-100 p-6 hidden lg:block">
-                    <nav className="space-y-2">
+                <aside className={`
+                    fixed lg:relative inset-y-0 left-0 z-[70] 
+                    w-72 lg:w-80 bg-white border-r border-slate-100 p-6 
+                    transform transition-transform duration-300 ease-in-out
+                    ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+                    ${i18n.dir() === 'rtl' ? 'right-0 left-auto !translate-x-full' : ''}
+                    ${i18n.dir() === 'rtl' && isSidebarOpen ? '!translate-x-0' : ''}
+                    flex flex-col
+                `}>
+                    <div className="flex items-center justify-between mb-8 lg:hidden">
+                        <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-100">
+                                <span className="text-white font-black text-lg">K</span>
+                            </div>
+                            <span className="text-lg font-black tracking-tight text-slate-800 uppercase">
+                                KHADAMATI
+                            </span>
+                        </div>
+                        <button
+                            onClick={() => setIsSidebarOpen(false)}
+                            className="p-2 text-slate-400 hover:text-emerald-600 transition-colors"
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <nav className="space-y-2" onClick={() => setIsSidebarOpen(false)}>
                         <SidebarItem
                             to="/"
                             t={t}
@@ -151,45 +196,45 @@ function AppContent() {
                 </aside>
 
                 {/* Main Content Area */}
-                <main className="flex-1 overflow-y-auto p-8 lg:p-12 custom-scrollbar">
+                <main className="flex-1 overflow-y-auto p-4 sm:p-8 lg:p-12 custom-scrollbar">
                     <div className="max-w-7xl mx-auto animate-fade-in">
                         <Routes>
                             <Route path="/" element={
-                                <div className="space-y-12">
+                                <div className="space-y-8 sm:space-y-12">
                                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                                         <div>
-                                            <h2 className="text-5xl font-black text-slate-900 leading-tight tracking-tight">
+                                            <h2 className="text-3xl sm:text-5xl font-black text-slate-900 leading-tight tracking-tight">
                                                 {t('WelcomeBack')}, <span className="text-emerald-600">Admin</span>
                                             </h2>
-                                            <p className="text-slate-400 font-bold mt-2 text-lg">Real-time overview of your service marketplace.</p>
+                                            <p className="text-slate-400 font-bold mt-2 text-base sm:text-lg">Real-time overview of your service marketplace.</p>
                                         </div>
-                                        <div className="bg-white px-8 py-5 rounded-[2rem] shadow-sm border border-slate-100 flex items-center gap-4">
+                                        <div className="bg-white px-5 sm:px-8 py-3 sm:py-5 rounded-2xl sm:rounded-[2rem] shadow-sm border border-slate-100 flex items-center gap-4">
                                             <div className="flex -space-x-3">
                                                 {[1, 2, 3].map(i => (
-                                                    <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-slate-200 overflow-hidden shadow-sm">
+                                                    <div key={i} className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-white bg-slate-200 overflow-hidden shadow-sm">
                                                         <img src={`https://i.pravatar.cc/100?img=${i + 10}`} alt="Active Admin" />
                                                     </div>
                                                 ))}
                                             </div>
                                             <div className="border-l pl-4 border-slate-200">
-                                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Global Reach</p>
-                                                <p className="text-sm font-black text-slate-800 mt-1 uppercase">{statsLoading ? '...' : `${stats.totalCities} ${stats.totalCities === 1 ? 'City' : 'Cities'} Online`}</p>
+                                                <p className="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Global Reach</p>
+                                                <p className="text-xs sm:text-sm font-black text-slate-800 mt-1 uppercase">{statsLoading ? '...' : `${stats.totalCities} ${stats.totalCities === 1 ? 'City' : 'Cities'} Online`}</p>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                                         {statCards.map((stat, i) => (
-                                            <div key={i} className="bg-white p-10 rounded-[2.5rem] shadow-sm border border-slate-100 hover:shadow-2xl hover:shadow-slate-100 transition-all duration-500 group relative overflow-hidden">
-                                                <div className={`absolute -right-8 -bottom-8 w-32 h-32 bg-${stat.color}-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-700`}></div>
-                                                <div className={`w-16 h-16 rounded-3xl bg-${stat.color}-50 flex items-center justify-center text-${stat.color}-600 mb-8 group-hover:rotate-12 transition-all duration-500 shadow-sm border border-${stat.color}-100/50 relative z-10`}>
-                                                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={stat.icon}></path></svg>
+                                            <div key={i} className={`bg-white p-6 sm:p-10 rounded-2xl sm:rounded-[2.5rem] shadow-sm border border-slate-100 hover:shadow-2xl hover:shadow-slate-100 transition-all duration-500 group relative overflow-hidden ${i === 2 && 'sm:col-span-2 lg:col-span-1'}`}>
+                                                <div className={`absolute -right-8 -bottom-8 w-24 sm:w-32 h-24 sm:h-32 bg-${stat.color}-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-700`}></div>
+                                                <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-3xl bg-${stat.color}-50 flex items-center justify-center text-${stat.color}-600 mb-6 sm:mb-8 group-hover:rotate-12 transition-all duration-500 shadow-sm border border-${stat.color}-100/50 relative z-10`}>
+                                                    <svg className="w-6 h-6 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={stat.icon}></path></svg>
                                                 </div>
-                                                <h3 className="text-slate-400 font-black text-xs uppercase tracking-widest relative z-10">{t(stat.label)}</h3>
+                                                <h3 className="text-slate-400 font-black text-[10px] sm:text-xs uppercase tracking-widest relative z-10">{t(stat.label)}</h3>
                                                 {statsLoading ? (
-                                                    <div className="h-12 w-24 bg-slate-100 animate-pulse rounded-2xl mt-3 relative z-10"></div>
+                                                    <div className="h-10 sm:h-12 w-20 sm:w-24 bg-slate-100 animate-pulse rounded-2xl mt-3 relative z-10"></div>
                                                 ) : (
-                                                    <p className="text-5xl font-black text-slate-900 mt-3 tracking-tighter relative z-10">
+                                                    <p className="text-3xl sm:text-5xl font-black text-slate-900 mt-2 sm:mt-3 tracking-tighter relative z-10">
                                                         {typeof stat.val === 'number' && stat.val >= 1000 ? `${(stat.val / 1000).toFixed(1)}k` : stat.val}
                                                     </p>
                                                 )}
@@ -198,43 +243,43 @@ function AppContent() {
                                     </div>
 
                                     {/* Middle Section: Insights & Category Stats */}
-                                    <div className="grid lg:grid-cols-3 gap-8">
-                                        <div className="lg:col-span-2 bg-emerald-950 rounded-[3rem] p-12 relative overflow-hidden shadow-2xl shadow-emerald-200 animate-fade-in group">
-                                            <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500 opacity-20 rounded-full -mr-48 -mt-48 blur-3xl group-hover:opacity-30 transition-opacity duration-700"></div>
-                                            <div className="absolute bottom-0 left-0 w-64 h-64 bg-teal-500 opacity-10 rounded-full -ml-32 -mb-32 blur-3xl"></div>
+                                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                        <div className="lg:col-span-2 bg-emerald-950 rounded-2xl sm:rounded-[3rem] p-8 sm:p-12 relative overflow-hidden shadow-2xl shadow-emerald-200 animate-fade-in group">
+                                            <div className="absolute top-0 right-0 w-64 sm:w-96 h-64 sm:h-96 bg-emerald-500 opacity-20 rounded-full -mr-32 sm:-mr-48 -mt-32 sm:-mt-48 blur-3xl group-hover:opacity-30 transition-opacity duration-700"></div>
+                                            <div className="absolute bottom-0 left-0 w-48 sm:w-64 h-48 sm:h-64 bg-teal-500 opacity-10 rounded-full -ml-24 sm:-ml-32 -mb-24 sm:-mb-32 blur-3xl"></div>
 
                                             <div className="relative z-10">
-                                                <span className="bg-emerald-500/20 text-emerald-400 px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border border-emerald-500/30">Intelligence</span>
-                                                <h3 className="text-4xl font-black text-white mt-6 mb-4 max-w-lg">Platform Growth Insights</h3>
+                                                <span className="bg-emerald-500/20 text-emerald-400 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] border border-emerald-500/30">Intelligence</span>
+                                                <h3 className="text-2xl sm:text-4xl font-black text-white mt-4 sm:mt-6 mb-3 sm:mb-4 max-w-lg">Platform Growth Insights</h3>
                                                 {statsLoading ? (
-                                                    <p className="text-emerald-100/40 text-lg font-medium leading-relaxed mb-10 max-w-xl">Loading live data...</p>
+                                                    <p className="text-emerald-100/40 text-base sm:text-lg font-medium leading-relaxed mb-6 sm:mb-10 max-w-xl">Loading live data...</p>
                                                 ) : (
-                                                    <p className="text-emerald-100/60 text-lg font-medium leading-relaxed mb-10 max-w-xl">
+                                                    <p className="text-emerald-100/60 text-base sm:text-lg font-medium leading-relaxed mb-6 sm:mb-10 max-w-xl">
                                                         {stats.cityStats?.[0] && <><span className="text-white font-black">{stats.cityStats[0]._id}</span> leads all regions with <span className="text-white font-black">{stats.cityStats[0].count}</span> registered workers. </>}
                                                         {stats.jobTypeStats?.[0] && <>Top service demand is <span className="text-emerald-400 font-black italic">{stats.jobTypeStats[0]._id}</span>{stats.jobTypeStats?.[1] ? <> followed by <span className="text-emerald-400 font-black italic">{stats.jobTypeStats[1]._id}</span></> : ''} with <span className="text-white font-black underline decoration-emerald-500 decoration-4 underline-offset-4">{stats.totalWorkers} providers</span> across <span className="text-white font-black">{stats.totalCities} {stats.totalCities === 1 ? 'city' : 'cities'}</span>.</>}
                                                     </p>
                                                 )}
                                                 <div className="flex flex-wrap gap-4">
-                                                    <Link to="/analytics" className="bg-white text-emerald-900 font-black px-10 py-5 rounded-2xl hover:bg-emerald-50 transition-all shadow-xl hover:-translate-y-1 active:scale-95 text-sm uppercase tracking-widest text-center">
+                                                    <Link to="/analytics" className="w-full sm:w-auto bg-white text-emerald-900 font-black px-8 sm:px-10 py-4 sm:py-5 rounded-xl sm:rounded-2xl hover:bg-emerald-50 transition-all shadow-xl hover:-translate-y-1 active:scale-95 text-xs sm:text-sm uppercase tracking-widest text-center">
                                                         View Full Analytics
                                                     </Link>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div className="bg-white rounded-[3rem] p-10 shadow-sm border border-slate-100 flex flex-col items-center text-center justify-center relative overflow-hidden group">
+                                        <div className="bg-white rounded-2xl sm:rounded-[3rem] p-8 sm:p-10 shadow-sm border border-slate-100 flex flex-col items-center text-center justify-center relative overflow-hidden group">
                                             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-50/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                            <div className="w-24 h-24 rounded-[2rem] bg-indigo-50 flex items-center justify-center text-indigo-600 mb-8 shadow-sm group-hover:scale-110 transition-transform duration-500">
-                                                <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
+                                            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl sm:rounded-[2rem] bg-indigo-50 flex items-center justify-center text-indigo-600 mb-6 sm:mb-8 shadow-sm group-hover:scale-110 transition-transform duration-500">
+                                                <svg className="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
                                             </div>
-                                            <h3 className="text-xl font-black text-slate-900 mb-2 uppercase tracking-tight">Service Power</h3>
-                                            <p className="text-slate-400 font-bold mb-8 text-sm">Most dominant professional categories</p>
+                                            <h3 className="text-lg sm:text-xl font-black text-slate-900 mb-2 uppercase tracking-tight">Service Power</h3>
+                                            <p className="text-slate-400 font-bold mb-6 sm:mb-8 text-xs sm:text-sm">Most dominant professional categories</p>
 
-                                            <div className="w-full space-y-4 relative z-10">
+                                            <div className="w-full space-y-3 sm:space-y-4 relative z-10">
                                                 {stats.jobTypeStats?.slice(0, 3).map((cat, i) => (
-                                                    <div key={i} className="flex items-center justify-between bg-slate-50 p-4 rounded-2xl border border-slate-100 hover:border-emerald-200 transition-colors">
-                                                        <span className="font-black text-slate-700 text-xs uppercase tracking-widest">{cat._id}</span>
-                                                        <span className="bg-white px-3 py-1 rounded-lg text-[10px] font-black text-emerald-600 shadow-sm border border-slate-100">{cat.count} Providers</span>
+                                                    <div key={i} className="flex items-center justify-between bg-slate-50 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-100 hover:border-emerald-200 transition-colors">
+                                                        <span className="font-black text-slate-700 text-[10px] sm:text-xs uppercase tracking-widest">{cat._id}</span>
+                                                        <span className="bg-white px-2 sm:px-3 py-1 rounded-lg text-[9px] sm:text-[10px] font-black text-emerald-600 shadow-sm border border-slate-100">{cat.count} Providers</span>
                                                     </div>
                                                 ))}
                                                 {(!stats.jobTypeStats || stats.jobTypeStats.length === 0) && (
@@ -245,68 +290,68 @@ function AppContent() {
                                     </div>
 
                                     {/* Bottom: Recent Activity Tables */}
-                                    <div className="grid lg:grid-cols-2 gap-8">
-                                        <div className="bg-white rounded-[3rem] shadow-sm border border-slate-100 overflow-hidden">
-                                            <div className="px-10 py-10 border-b border-slate-50 flex justify-between items-center bg-slate-50/30">
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                        <div className="bg-white rounded-2xl sm:rounded-[3rem] shadow-sm border border-slate-100 overflow-hidden">
+                                            <div className="px-6 sm:px-10 py-6 sm:py-10 border-b border-slate-50 flex justify-between items-center bg-slate-50/30">
                                                 <div>
-                                                    <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight">New Professionals</h3>
-                                                    <p className="text-[10px] text-slate-400 font-black mt-1 uppercase tracking-widest">Awaiting Identity Verification</p>
+                                                    <h3 className="text-lg sm:text-xl font-black text-slate-900 uppercase tracking-tight">New Professionals</h3>
+                                                    <p className="text-[9px] sm:text-[10px] text-slate-400 font-black mt-1 uppercase tracking-widest">Awaiting Identity Verification</p>
                                                 </div>
-                                                <Link to="/workers" className="text-emerald-600 font-black text-xs uppercase tracking-widest hover:underline decoration-2 underline-offset-4">Full Register</Link>
+                                                <Link to="/workers" className="text-emerald-600 font-black text-[10px] sm:text-xs uppercase tracking-widest hover:underline decoration-2 underline-offset-4">Full Register</Link>
                                             </div>
-                                            <div className="p-4">
+                                            <div className="p-2 sm:p-4">
                                                 {stats.recentWorkers?.map((w, i) => (
-                                                    <div key={i} className="flex items-center justify-between p-6 hover:bg-slate-50 rounded-[2.5rem] transition-all group">
-                                                        <div className="flex items-center gap-5">
-                                                            <div className="w-16 h-16 rounded-[1.5rem] overflow-hidden shadow-md border-2 border-white bg-slate-100">
+                                                    <div key={i} className="flex items-center justify-between p-4 sm:p-6 hover:bg-slate-50 rounded-xl sm:rounded-[2.5rem] transition-all group">
+                                                        <div className="flex items-center gap-4 sm:gap-5">
+                                                            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-[1.5rem] overflow-hidden shadow-md border-2 border-white bg-slate-100 shrink-0">
                                                                 <img src={w.images?.[0] ? `https://khadamati-backend-mifb.onrender.com${w.images[0]}` : "https://placehold.co/100x100?text=W"} alt="" className="w-full h-full object-cover" />
                                                             </div>
-                                                            <div>
-                                                                <p className="font-black text-slate-800 text-base leading-tight group-hover:text-emerald-700 transition-colors">{w.name}</p>
-                                                                <p className="text-[10px] bg-emerald-100 text-emerald-800 inline-block px-2 py-0.5 rounded uppercase font-black mt-2 border border-emerald-200 tracking-widest">{w.jobType}</p>
+                                                            <div className="min-w-0">
+                                                                <p className="font-black text-slate-800 text-sm sm:text-base leading-tight group-hover:text-emerald-700 transition-colors truncate">{w.name}</p>
+                                                                <p className="text-[9px] sm:text-[10px] bg-emerald-100 text-emerald-800 inline-block px-1.5 sm:px-2 py-0.5 rounded uppercase font-black mt-1.5 sm:mt-2 border border-emerald-200 tracking-widest truncate">{w.jobType}</p>
                                                             </div>
                                                         </div>
-                                                        <div className="text-right hidden sm:block">
-                                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Joined</p>
-                                                            <p className="text-sm font-black text-slate-700 mt-0.5">{new Date(w.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</p>
+                                                        <div className="text-right hidden xs:block">
+                                                            <p className="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest">Joined</p>
+                                                            <p className="text-xs sm:text-sm font-black text-slate-700 mt-0.5 whitespace-nowrap">{new Date(w.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</p>
                                                         </div>
                                                     </div>
                                                 ))}
                                                 {(!stats.recentWorkers || stats.recentWorkers.length === 0) && (
-                                                    <div className="py-20 text-center text-slate-400 font-bold italic">No recent registrations.</div>
+                                                    <div className="py-12 sm:py-20 text-center text-slate-400 font-bold italic text-sm">No recent registrations.</div>
                                                 )}
                                             </div>
                                         </div>
 
-                                        <div className="bg-white rounded-[3rem] shadow-sm border border-slate-100 overflow-hidden">
-                                            <div className="px-10 py-10 border-b border-slate-50 flex justify-between items-center bg-slate-50/30">
+                                        <div className="bg-white rounded-2xl sm:rounded-[3rem] shadow-sm border border-slate-100 overflow-hidden">
+                                            <div className="px-6 sm:px-10 py-6 sm:py-10 border-b border-slate-50 flex justify-between items-center bg-slate-50/30">
                                                 <div>
-                                                    <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight">Recent Platform Clients</h3>
-                                                    <p className="text-[10px] text-slate-400 font-black mt-1 uppercase tracking-widest">Engagement Overview</p>
+                                                    <h3 className="text-lg sm:text-xl font-black text-slate-900 uppercase tracking-tight">Recent Platform Clients</h3>
+                                                    <p className="text-[9px] sm:text-[10px] text-slate-400 font-black mt-1 uppercase tracking-widest">Engagement Overview</p>
                                                 </div>
-                                                <Link to="/users" className="text-emerald-600 font-black text-xs uppercase tracking-widest hover:underline decoration-2 underline-offset-4">Audience Insights</Link>
+                                                <Link to="/users" className="text-emerald-600 font-black text-[10px] sm:text-xs uppercase tracking-widest hover:underline decoration-2 underline-offset-4">Audience Insights</Link>
                                             </div>
-                                            <div className="p-4">
+                                            <div className="p-2 sm:p-4">
                                                 {stats.recentUsers?.map((u, i) => (
-                                                    <div key={i} className="flex items-center justify-between p-6 hover:bg-slate-50 rounded-[2.5rem] transition-all group">
-                                                        <div className="flex items-center gap-5">
-                                                            <div className="w-16 h-16 rounded-[1.5rem] bg-slate-50 flex items-center justify-center text-slate-300 font-black text-2xl border border-slate-100 group-hover:bg-emerald-50 group-hover:text-emerald-600 group-hover:border-emerald-100 transition-all">
+                                                    <div key={i} className="flex items-center justify-between p-4 sm:p-6 hover:bg-slate-50 rounded-xl sm:rounded-[2.5rem] transition-all group">
+                                                        <div className="flex items-center gap-4 sm:gap-5">
+                                                            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-[1.5rem] bg-slate-50 flex items-center justify-center text-slate-300 font-black text-xl sm:text-2xl border border-slate-100 group-hover:bg-emerald-50 group-hover:text-emerald-600 group-hover:border-emerald-100 transition-all shrink-0">
                                                                 {u.name.charAt(0)}
                                                             </div>
-                                                            <div>
-                                                                <p className="font-black text-slate-800 text-base leading-tight">{u.name}</p>
-                                                                <p className="text-[10px] text-slate-400 font-bold mt-1.5 uppercase tracking-tighter">{u.email}</p>
+                                                            <div className="min-w-0">
+                                                                <p className="font-black text-slate-800 text-sm sm:text-base leading-tight truncate">{u.name}</p>
+                                                                <p className="text-[9px] sm:text-[10px] text-slate-400 font-bold mt-1 sm:mt-1.5 uppercase tracking-tighter truncate">{u.email}</p>
                                                             </div>
                                                         </div>
-                                                        <div className="text-right hidden sm:block">
-                                                            <span className={`text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1.5 rounded-full ${u.role === 'admin' ? 'bg-amber-50 text-amber-600 border border-amber-100' : 'bg-emerald-50 text-emerald-600 border border-emerald-100'}`}>
+                                                        <div className="text-right hidden xs:block">
+                                                            <span className={`text-[8px] sm:text-[9px] font-black uppercase tracking-[0.2em] px-2 sm:px-3 py-1 sm:py-1.5 rounded-full ${u.role === 'admin' ? 'bg-amber-50 text-amber-600 border border-amber-100' : 'bg-emerald-50 text-emerald-600 border border-emerald-100'}`}>
                                                                 {u.role}
                                                             </span>
                                                         </div>
                                                     </div>
                                                 ))}
                                                 {(!stats.recentUsers || stats.recentUsers.length === 0) && (
-                                                    <div className="py-20 text-center text-slate-400 font-bold italic">No recent user signups.</div>
+                                                    <div className="py-12 sm:py-20 text-center text-slate-400 font-bold italic text-sm">No recent user signups.</div>
                                                 )}
                                             </div>
                                         </div>
